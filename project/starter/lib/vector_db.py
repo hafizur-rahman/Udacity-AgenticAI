@@ -1,3 +1,4 @@
+import os
 from typing import List, Optional, Dict, Any, Union
 from typing_extensions import TypedDict
 import chromadb
@@ -162,9 +163,16 @@ class VectorStoreManager:
         self.embedding_function = self._create_embedding_function(openai_api_key)
 
     def _create_embedding_function(self, api_key: str) -> EmbeddingFunction:
-        embeddings_fn = embedding_functions.OpenAIEmbeddingFunction(
-            api_key=api_key
-        )
+        if os.getenv("OPENAI_API_KEY").startswith("ollama"):
+            # Local workspace
+            embeddings_fn = embedding_functions.OllamaEmbeddingFunction(
+                model_name="nomic-embed-text",
+                url="http://localhost:11434/api/embeddings"
+            )
+        else:
+            embeddings_fn = embedding_functions.OpenAIEmbeddingFunction(
+                api_key=api_key
+            )
         return embeddings_fn
 
     def __repr__(self):

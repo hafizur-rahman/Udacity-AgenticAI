@@ -8,3 +8,4 @@ tavily-python>=0.5.4
 pdfplumber>=0.11.6
 # To run the notebooks locally you also need Jupyter, e.g.  pip install notebook
 # Udacity workspace only (Linux; no macOS wheels): pysqlite3-binary
+ollama
